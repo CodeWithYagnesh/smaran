@@ -6,7 +6,17 @@ import (
 	"strconv"
 )
 
+var Version = "dev"
+
 func main() {
+	if len(os.Args) >= 2 {
+		switch os.Args[1] {
+		case "version", "-v", "--version":
+			fmt.Printf("didfix %s\n", Version)
+			return
+		}
+	}
+
 	if len(os.Args) >= 2 && os.Args[1] == "init" {
 		shell := ""
 		install := false
@@ -167,6 +177,7 @@ Usage:
   didfix list [N]                            List N recent tagged fixes (default 10)
   didfix untag <tag_id>                      Remove a tag and unbind commands
   didfix init [bash|zsh] [--install]         Output or install shell hook configuration
+  didfix version                             Print version information
 `
 	fmt.Print(usage)
 }
