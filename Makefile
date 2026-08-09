@@ -1,4 +1,4 @@
-BINARY  := didfix
+BINARY  := smaran
 PREFIX  := /usr/local/bin
 GOFLAGS := -ldflags="-s -w"
 

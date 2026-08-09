@@ -11,7 +11,7 @@ var ignoredPrefixes = []string{
 	"clear",
 	"exit",
 	"history",
-	"didfix",
+	"smaran",
 	"wasrun",
 	"top",
 	"htop",

@@ -42,6 +42,6 @@ func untag(db *sql.DB, tagID int64) error {
 		return err
 	}
 
-	fmt.Printf("removed tag #%d %q (unlinked %d commands)\n", tagID, note, unlinkedCount)
+	fmt.Println(successText("removed tag #%d %q (unlinked %d commands)", tagID, note, unlinkedCount))
 	return nil
 }

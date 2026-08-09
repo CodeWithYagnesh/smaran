@@ -1,4 +1,4 @@
-module codewithyagnesh/didfix
+module codewithyagnesh/smaran
 
 go 1.25.0
 
