@@ -8,27 +8,27 @@ import (
 )
 
 const bashHook = `
-# --- didfix bash shell hook ---
-didfix_log() {
+# --- smaran bash shell hook ---
+smaran_log() {
   local cmd
   cmd=$(history 1 | sed 's/^[ ]*[0-9]*[ ]*//')
-  didfix log --cmd "$cmd" --cwd "$PWD" &disown 2>/dev/null
+  smaran log --cmd "$cmd" --cwd "$PWD" &disown 2>/dev/null
 }
-if [[ ! "$PROMPT_COMMAND" =~ didfix_log ]]; then
-  PROMPT_COMMAND="didfix_log; $PROMPT_COMMAND"
+if [[ ! "$PROMPT_COMMAND" =~ smaran_log ]]; then
+  PROMPT_COMMAND="smaran_log; $PROMPT_COMMAND"
 fi
-# --- end didfix hook ---
+# --- end smaran hook ---
 `
 
 const zshHook = `
-# --- didfix zsh shell hook ---
-didfix_zsh_log() {
-  didfix log --cmd "$(fc -ln -1)" --cwd "$PWD" &disown 2>/dev/null
+# --- smaran zsh shell hook ---
+smaran_zsh_log() {
+  smaran log --cmd "$(fc -ln -1)" --cwd "$PWD" &disown 2>/dev/null
 }
-if (( ! ${precmd_functions[(Ie)didfix_zsh_log]} )); then
-  precmd_functions+=(didfix_zsh_log)
+if (( ! ${precmd_functions[(Ie)smaran_zsh_log]} )); then
+  precmd_functions+=(smaran_zsh_log)
 fi
-# --- end didfix hook ---
+# --- end smaran hook ---
 `
 
 func printOrInstallInit(shell string, install bool) error {
@@ -63,8 +63,8 @@ func printOrInstallInit(shell string, install bool) error {
 	rcPath := filepath.Join(home, rcFileName)
 	content, _ := os.ReadFile(rcPath)
 
-	if strings.Contains(string(content), "didfix_log") || strings.Contains(string(content), "didfix_zsh_log") {
-		fmt.Printf("didfix shell hook is already present in %s\n", rcPath)
+	if strings.Contains(string(content), "smaran_log") || strings.Contains(string(content), "smaran_zsh_log") {
+		fmt.Print(Colorize(Yellow, fmt.Sprintf("smaran shell hook is already present in %s\n", rcPath)))
 		return nil
 	}
 
@@ -78,7 +78,7 @@ func printOrInstallInit(shell string, install bool) error {
 		return err
 	}
 
-	fmt.Printf("successfully appended didfix shell hook to %s\n", rcPath)
-	fmt.Printf("Run 'source %s' or restart your terminal to activate.\n", rcPath)
+	fmt.Print(successText("successfully appended smaran shell hook to %s\n", rcPath))
+	fmt.Print(successText("Run 'source %s' or restart your terminal to activate.\n", rcPath))
 	return nil
 }

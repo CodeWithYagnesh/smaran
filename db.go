@@ -13,7 +13,7 @@ func openDB() (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	dir := filepath.Join(home, ".didfix")
+	dir := filepath.Join(home, ".smaran")
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return nil, err
 	}

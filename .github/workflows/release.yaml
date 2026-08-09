@@ -33,13 +33,13 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: 0
         run: |
-          go build -ldflags="-X 'main.Version=${GITHUB_REF_NAME}' -s -w" -o dist/didfix .
+          go build -ldflags="-X 'main.Version=${GITHUB_REF_NAME}' -s -w" -o dist/smaran .
 
       - name: Package Release Asset
         id: package
         run: |
-          ARCHIVE_NAME="didfix-${{ github.ref_name }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz"
-          cd dist && tar -czf "../${ARCHIVE_NAME}" didfix && cd ..
+          ARCHIVE_NAME="smaran-${{ github.ref_name }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz"
+          cd dist && tar -czf "../${ARCHIVE_NAME}" smaran && cd ..
           echo "archive_name=${ARCHIVE_NAME}" >> $GITHUB_OUTPUT
 
       - name: Upload Artifact

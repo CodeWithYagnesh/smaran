@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -12,6 +13,12 @@ type TagResult struct {
 	Note      string
 	CreatedAt time.Time
 	Commands  []string
+}
+
+var ansiEscape = regexp.MustCompile(`\x1b\[[0-9;]*[A-Za-z]`)
+
+func stripANSI(s string) string {
+	return ansiEscape.ReplaceAllString(s, "")
 }
 
 func search(db *sql.DB, query string) error {
@@ -78,15 +85,18 @@ func search(db *sql.DB, query string) error {
 	}
 
 	if len(results) == 0 {
-		fmt.Printf("No fixes found matching %q.\n", query)
+		fmt.Printf(Colorize(Yellow, "No fixes found matching %q.\n"), query)
 		return nil
 	}
 
 	for _, res := range results {
 		timeFormatted := res.CreatedAt.Local().Format("2006-01-02 15:04")
-		fmt.Printf("[#%d] %s  %q\n", res.ID, timeFormatted, res.Note)
-		for i, cmd := range res.Commands {
-			fmt.Printf("  %d. %s\n", i+1, cmd)
+		fmt.Printf("%s %s  %s\n",
+			Colorize(Yellow, fmt.Sprintf("[#%d]", res.ID)),
+			Colorize(Gray, timeFormatted),
+			Colorize(Magenta, stripANSI(res.Note)))
+		for i := len(res.Commands) - 1; i >= 0; i-- {
+			fmt.Printf("  %d. %s\n", len(res.Commands)-i, Colorize(Cyan, stripANSI(res.Commands[i])))
 		}
 		fmt.Println()
 	}
